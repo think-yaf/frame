@@ -4,8 +4,8 @@
     "type": "library",
     "license": "MIT",
     "authors": [{
-        "name": "忆坛酒厂",
-        "email": "ahegege@126.com"
+        "name": "东兰县忆坛酒厂",
+        "email": "tanminghe@126.com"
     }],
     "minimum-stability": "dev",
     "require": {
