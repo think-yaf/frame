@@ -1,10 +1,13 @@
 {
     "name": "thinkyaf/think-frame",
-    "license": "Apache-2.0",
+    "description": "try make a package",
+    "type": "library",
+    "license": "MIT",
     "authors": [{
-        "name": "thinkyaf",
-        "email": "tanminghe@126.com"
+        "name": "忆坛酒厂",
+        "email": "ahegege@126.com"
     }],
+    "minimum-stability": "dev",
     "require": {
         "php": ">=7.0"
     },
