@@ -4,6 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
+        "frame": "1.0",
         "php": ">=7.0"
     },
     "autoload": {
