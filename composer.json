@@ -1,10 +1,11 @@
 {
     "name": "thinkyaf/think-frame",
-    "minimum-stability": "dev",
-    "type": "library",
-    "license": "MIT",
+    "license": "Apache-2.0",
+    "authors": [{
+        "name": "thinkyaf",
+        "email": "tanminghe@126.com"
+    }],
     "require": {
-        "frame": "1.0",
         "php": ">=7.0"
     },
     "autoload": {
