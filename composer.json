@@ -6,7 +6,7 @@
     },
     "autoload": {
         "psr-4": {
-            "thinkyaf\\base\\": "src/Base",
+            "thinkyaf\\base\\": "src/Base"
         }
     }
 }
