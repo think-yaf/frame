@@ -1,0 +1,12 @@
+{
+    "name": "thinkyaf/think-frame",
+    "require": {
+        "frame": "1.0",
+        "php": ">=7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "thinkyaf\\base\\": "src/Base",
+        }
+    }
+}
