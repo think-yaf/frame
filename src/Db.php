@@ -33,11 +33,19 @@ class Db extends Medoo
         }
         parent::__construct($options);
     }
+    //当前obj
+    public function obj()
+    {
+        return $this;
+    }
     // 获取pdo
     public function pdo()
     {
         return $this->pdo;
     }
+    /** 
+     * ==================设置参数==================
+     */ 
     // 设置表名
     public function table($table)
     {
@@ -62,6 +70,9 @@ class Db extends Medoo
         $this->where = $where;
         return $this;
     }
+    /** 
+     * ==================操作数据库==================
+     */ 
     //查询单条数据
     public function find()
     {
@@ -85,6 +96,9 @@ class Db extends Medoo
         }
         return $this;
     }
+    /** 
+     * ==================获取数据信息==================
+     */ 
     // 获取数据
     public function getData()
     {
@@ -95,7 +109,6 @@ class Db extends Medoo
             'error' => $this->error(),
             'data' => $this->data
         ];
-        //pre($this);
         return $rs;
     }
 }
