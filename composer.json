@@ -1,15 +1,15 @@
 {
     "name": "thinkyaf/think-frame",
-    "description": "try make a package",
+    "description": "thinkyaf-frame",
     "type": "library",
     "license": "MIT",
     "authors": [{
-        "name": "东兰县忆坛酒厂",
+        "name": "Tan Minghe",
         "email": "tanminghe@126.com"
     }],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.0"
+        "php": ">=5.4"
     },
     "autoload": {
         "psr-4": {
