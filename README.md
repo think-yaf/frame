@@ -2,7 +2,7 @@
 
 #### 介绍
 
-thinkyaf框架是基于yaf框架开发
+thinkyaf框架是一个PHP开发框架，基于高效的yaf.3框架开发，
 
 官网：http://www.thinkyaf.com/
 微信/QQ：844888168
@@ -10,7 +10,8 @@ thinkyaf框架是基于yaf框架开发
 
 #### 安装教程
 
-1. composer require thinkyaf/think-frame dev-master
+1. 必须启用命名空间：yaf.use_namespace = 1
+2. composer require thinkyaf/think-frame dev-master
 
 #### 使用说明
 
