@@ -40,10 +40,11 @@ class Think
         Dispatcher::getInstance()->disableView();
     }
     // 初始化
-    public function init()
+    public function app()
     {
+        //跨域
         $this->origin();
-        return $this;
+        return $this->app;
     }
     // 允许跨域
     protected function origin()

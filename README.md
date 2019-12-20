@@ -1,4 +1,4 @@
-# Thinkyaf框架
+# ThinkYaf框架
 
 #### 介绍
 
