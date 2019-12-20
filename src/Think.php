@@ -6,28 +6,55 @@ use \Yaf\Application;
 use Yaf\Dispatcher;
 use Yaf\Loader;
 
+defined('ROOT_PATH') or define('ROOT_PATH', realpath(dirname(__FILE__) . '/../../../../'));
+defined('APP_PATH') or define('APP_PATH', ROOT_PATH . '\\application\\');
+// 框架路径
 define("Think_PATH",  realpath(dirname(__FILE__) . '/'));
 class Think
 {
     public function __construct()
     {
-        // 实例化yaf
-        $this->app = new Application(Think_PATH . "/config.ini");
-        // 配置信息
-        $this->config = Application::app()->getConfig();
-        // 设置常量
-        define("APP_PATH",  $this->config->application->directory);
         // 加载助手
         Loader::import(Think_PATH . '/help/helper.php');
+        // 获取ini文件
+        $ini_dir = APP_PATH . "application.ini";
+        // 使用默认配置文件
+        if (!file_exists($ini_dir)) {
+            if (!copy(Think_PATH . "/application.ini", $ini_dir)) {
+                echo ("请创建文件：<br>{$ini_dir}");
+                echo '<pre>';
+                $con = read_file(Think_PATH . "/application.ini");
+                foreach ($con as $ov) {
+                    echo $ov;
+                }
+                die();
+            }
+        }
+        // 实例化yaf
+        $this->app = new Application($ini_dir);
+        // 配置信息
+        $this->config = Application::app()->getConfig();
         // 加载公共文件
         Loader::import(APP_PATH . '/common.php');
         // 关闭模板 
-        Dispatcher::getInstance()->disableView();// autoRender(FALSE);
+        Dispatcher::getInstance()->disableView();
     }
     // 初始化
-    function init()
+    public function init()
     {
+        $this->origin();
+        return $this;
+    }
+    // 允许跨域
+    protected function origin()
+    {
+        $header = $this->config->header;
+        if ($header->origin) {
+            header('Access-Control-Allow-Origin:' . $header->origin);
+        }
+        if ($header->headers) {
+            header("Access-Control-Allow-Headers:" . $header->headers);
+        }
         return $this;
     }
 }
-

@@ -8,6 +8,6 @@ class Request extends Facade
 {
     protected static function getFacadeClass()
     {
-        return 'thinkyaf\think\Request';
+        return 'thinkyaf\Request';
     }
 }

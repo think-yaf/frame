@@ -30,8 +30,8 @@ class Facade
      */
     protected static function createFacade(bool $newInstance = false)
     {
-        $class = static::getFacadeClass() ?: 'think\DbManager';
-
+        $class = static::getFacadeClass();
+        $key = md5($class);
         if (static::$alwaysNewInstance) {
             $newInstance = true;
         }
@@ -40,11 +40,10 @@ class Facade
             return new $class();
         }
 
-        if (!self::$instance) {
-            self::$instance = new $class();
+        if (!self::$instance[$key]) {
+            self::$instance[$key] = new $class();
         }
-
-        return self::$instance;
+        return self::$instance[$key];
     }
 
     // 调用实际类的方法
