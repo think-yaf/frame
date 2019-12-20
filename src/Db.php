@@ -9,6 +9,14 @@ class Db extends Medoo
 {
     // 表名
     protected $table;
+    // 字段
+    protected $columns = '*';
+    // 条件
+    protected $where = [];
+    // join
+    protected $join = null;
+    //数据
+    public $data = null;
     // 初始化
     public function __construct(array $options = null)
     {
@@ -35,6 +43,60 @@ class Db extends Medoo
     {
         $this->table = $table;
         return $this;
+    }
+    // 设置join
+    public function join($join)
+    {
+        $this->join = $join;
+        return $this;
+    }
+    //设置字段
+    public function field($columns)
+    {
+        $this->columns = $columns;
+        return $this;
+    }
+    //设置字段
+    public function where($where)
+    {
+        $this->where = $where;
+        return $this;
+    }
+    //查询单条数据
+    public function find()
+    {
+        if ($this->join) {
+            $this->data = $this->get($this->table, $this->join, $this->columns, $this->where);
+        } else {
+            $this->data = $this->get($this->table, $this->columns, $this->where);
+        }
+        return $this;
+    }
+    //查询单条数据
+    public function limit($limit = 15)
+    {
+        if (!isset($this->where['LIMIT'])) {
+            $this->where['LIMIT'] = $limit;
+        }
+        if ($this->join) {
+            $this->data = $this->select($this->table, $this->join, $this->columns, $this->where);
+        } else {
+            $this->data = $this->select($this->table, $this->columns, $this->where);
+        }
+        return $this;
+    }
+    // 获取数据
+    public function getData()
+    {
+        $rs = [
+            'info' => $this->info(),
+            'sql' => $this->sql,
+            'pdo' => $this->pdo,
+            'error' => $this->error(),
+            'data' => $this->data
+        ];
+        //pre($this);
+        return $rs;
     }
 }
 
