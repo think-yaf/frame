@@ -3,7 +3,7 @@
 namespace thinkyaf;
 
 use thinkyaf\org\Medoo;
-use \Yaf\Application;
+use Yaf\Application;
 
 class Db extends Medoo
 {
@@ -25,6 +25,7 @@ class Db extends Medoo
         }
         parent::__construct($options);
     }
+    // 获取pdo
     public function pdo()
     {
         return $this->pdo;

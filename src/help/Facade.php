@@ -31,15 +31,13 @@ class Facade
     protected static function createFacade(bool $newInstance = false)
     {
         $class = static::getFacadeClass();
-        $key = md5($class);
         if (static::$alwaysNewInstance) {
             $newInstance = true;
         }
-
         if ($newInstance) {
             return new $class();
         }
-
+        $key = md5($class);
         if (!self::$instance[$key]) {
             self::$instance[$key] = new $class();
         }
