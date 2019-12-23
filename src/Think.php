@@ -93,7 +93,7 @@ class Think
                         $mr_domain = HTTP_HOST;
                     }
                 } else {
-                    $mr_domain = "{$m['domain']}.".SERVER_NAME;
+                    $mr_domain = "{$m['domain']}." . SERVER_NAME;
                 }
                 if ($m['domain'] == HTTP_HOST || $mr_domain == HTTP_HOST) {
                     $uri = "/{$m['module']}";
@@ -111,7 +111,7 @@ class Think
                     break;
                 }
             }
-            pre($dispatcher->getRequest());
+            //pre($dispatcher->getRequest());
         }
     }
 }
