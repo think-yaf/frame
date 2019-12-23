@@ -12,6 +12,7 @@ defined('APP_PATH') or define('APP_PATH', ROOT_PATH . '/application/');
 define("Think_PATH",  realpath(dirname(__FILE__) . '/'));
 class Think
 {
+    // 初始化
     public function __construct()
     {
         // 加载助手
@@ -20,21 +21,7 @@ class Think
         $ini_dir = APP_PATH . "application.ini";
         // 使用默认配置文件
         if (!file_exists($ini_dir)) {
-            if (!copy(Think_PATH . "/application.ini", $ini_dir)) {
-                echo ("请创建文件：<br>{$ini_dir}");
-                echo '<pre>';
-                $con = read_file(Think_PATH . "/application.ini");
-                foreach ($con as $ov) {
-                    echo $ov;
-                }
-                die();
-            }
-        }
-        // 默认控制器处理
-        $controller_dir = APP_PATH.'controllers/index.php';
-        if($controller_dir){
-            echo '默认控制不存在<br>请创建：'.$controller_dir;
-            die();
+            $ini_dir = Think_PATH . "/application.ini";
         }
         // 实例化yaf
         $this->app = new Application($ini_dir);
@@ -47,15 +34,28 @@ class Think
         }
         // 关闭模板 
         Dispatcher::getInstance()->disableView();
-    }
-    // 初始化
-    public function app()
-    {
-        //跨域
+        $this->route();
         $this->origin();
-        return $this->app;
     }
-    // 允许跨域
+    // 自动模式
+    public function auto()
+    {
+        make_dir(APP_PATH);
+        make_dir(APP_PATH . 'library');
+        make_dir(APP_PATH . 'models');
+        make_dir(APP_PATH . 'plugins');
+        make_dir(APP_PATH . 'views');
+        // 获取ini文件
+        $ini_dir = APP_PATH . "application.ini";
+        if (!file_exists($ini_dir)) {
+            //copy(Think_PATH . "/application.ini", APP_PATH . "application.ini");
+        }
+        copy(Think_PATH . "/application.ini", APP_PATH . "application.ini");
+        make_controller();
+        make_controller('index', 'my');
+        return $this;
+    }
+    // 跨域设置
     protected function origin()
     {
         $header = $this->config->header;
@@ -66,5 +66,52 @@ class Think
             header("Access-Control-Allow-Headers:" . $header->headers);
         }
         return $this;
+    }
+    // 路由设置
+    protected function route()
+    {
+        $dispatcher = Dispatcher::getInstance();
+        $routes = $this->config->routes;
+        if ($routes) {
+            $dispatcher->getRouter()->addConfig($routes);
+        }
+        $request = $dispatcher->getRequest();
+        $base_domain = $this->config->application->domains ? $this->config->application->domain : $request->getServer('SERVER_NAME');
+        defined('HTTP_HOST') or define('HTTP_HOST', $request->getServer('HTTP_HOST'));
+        defined('SERVER_NAME') or define('SERVER_NAME', $base_domain);
+        if ($module = $this->config->module) {
+            foreach ($module->toArray() as $key => $m) {
+                if (!isset($m['module'])) {
+                    $m['module'] = $key;
+                }
+                $str = '';
+                if (substr($m['domain'], 0, 1) == '*') {
+                    $str = substr($m['domain'], 1) . '.' . SERVER_NAME;
+                    $mr_domain = (str_replace($str, '', HTTP_HOST)) . $str;
+                    // 处理主域名
+                    if (HTTP_HOST == trim($str, '.')) {
+                        $mr_domain = HTTP_HOST;
+                    }
+                } else {
+                    $mr_domain = "{$m['domain']}.".SERVER_NAME;
+                }
+                if ($m['domain'] == HTTP_HOST || $mr_domain == HTTP_HOST) {
+                    $uri = "/{$m['module']}";
+                    $request->setModuleName($m['module']);
+                    $request->setBaseUri("{$uri}");
+                    if (isset($m['controller'])) {
+                        $uri .= "/{$m['controller']}";
+                        $request->setControllerName($m['controller']);
+                    }
+                    if (isset($m['action'])) {
+                        $uri .= "/{$m['action']}";
+                        $request->setActionName($m['action']);
+                    }
+                    $request->setRequestUri($uri . $request->getRequestUri());
+                    break;
+                }
+            }
+            pre($dispatcher->getRequest());
+        }
     }
 }

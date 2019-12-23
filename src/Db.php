@@ -4,10 +4,12 @@ namespace thinkyaf;
 
 use thinkyaf\library\Medoo;
 use Yaf\Application;
-$db = Application::app()->getConfig()->db;
+
 class Db extends Medoo
 {
     protected $options = [];
+
+    protected $prefix;
     // 表名
     protected $table;
     // 字段
@@ -19,18 +21,11 @@ class Db extends Medoo
     //数据
     public $data = null;
     // 初始化
-    public function __construct(array $options = null)
+    public function __construct($options = '')
     {
-        if (!$options) {
-            $db = Application::app()->getConfig()->db;
-            $options = [
-                'database_type' => $db->type,
-                'database_name' => $db->database,
-                'server' => $db->hostname,
-                'username' => $db->username,
-                'password' => $db->password,
-                'charset' => $db->charset
-            ];
+        if (!is_array($options)) {
+            $db = Application::app()->getConfig()->db->toArray();
+            $options = isset($db[$options]) ? $db[$options] : $db[$db['default']];
         }
         parent::__construct($options);
     }
@@ -47,14 +42,18 @@ class Db extends Medoo
     /** 
      * ==================设置参数==================
      */
+    //默认不加前缀
+    public function name($name)
+    {
+        $this->table($this->prefix . $name);
+        return $this;
+    }
     // 设置表名
     public function table($table)
     {
         $this->table = $table;
         $this->columns = '*';
-        $this->where = null;
-        $this->join = null;
-        $this->data = null;
+        $this->where = $this->join = $this->data = null;
         return $this;
     }
     // 设置join
@@ -81,7 +80,6 @@ class Db extends Medoo
         $this->data = $data;
         return $this;
     }
-
     /** 
      * ==================操作数据库==================
      */
@@ -157,12 +155,7 @@ class Db extends Medoo
     {
         $pase = \Yaf\Dispatcher::getInstance()->getRequest()->getQuery($name, 1);
         $count = $count ? $count : $this->counts();
-        if ($pase < 2) {
-            $limits = [0, $limit];
-        } else {
-            $limits = [($pase - 1) * $limit, $limit];
-        }
-        $this->where['LIMIT'] = $limits;
+        $this->where['LIMIT'] = ($pase > 1) ? [($pase - 1) * $limit, $limit] : [0, $limit];
         $this->act('select');
         return $this->data;
     }
