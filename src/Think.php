@@ -35,7 +35,10 @@ class Think
         // 配置信息
         $this->config = Application::app()->getConfig();
         // 加载公共文件
-        Loader::import(APP_PATH . '/common.php');
+        $common_dir = APP_PATH . '/common.php';
+        if (file_exists($ini_dir)) {
+            Loader::import($common_dir);
+        }
         // 关闭模板 
         Dispatcher::getInstance()->disableView();
     }
