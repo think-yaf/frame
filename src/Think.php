@@ -7,7 +7,7 @@ use Yaf\Dispatcher;
 use Yaf\Loader;
 
 defined('ROOT_PATH') or define('ROOT_PATH', realpath(dirname(__FILE__) . '/../../../../'));
-defined('APP_PATH') or define('APP_PATH', ROOT_PATH . '\\application\\');
+defined('APP_PATH') or define('APP_PATH', ROOT_PATH . '/application/');
 // 框架路径
 define("Think_PATH",  realpath(dirname(__FILE__) . '/'));
 class Think
