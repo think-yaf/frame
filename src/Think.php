@@ -30,6 +30,11 @@ class Think
                 die();
             }
         }
+        $controller_dir = APP_PATH.'controllers/index.php';
+        if($controller_dir){
+            echo '默认控制不存在<br>请创建：'.$controller_dir;
+            die();
+        }
         // 实例化yaf
         $this->app = new Application($ini_dir);
         // 配置信息
