@@ -15,6 +15,9 @@ class Think
     // 初始化
     public function __construct()
     {
+        if (!ini_get('yaf.use_namespace')) {
+            die('please set yaf.use_namespace=1');
+        }
         // 加载助手
         Loader::import(Think_PATH . '/help/helper.php');
         // 获取ini文件
@@ -48,11 +51,9 @@ class Think
         // 获取ini文件
         $ini_dir = APP_PATH . "application.ini";
         if (!file_exists($ini_dir)) {
-            //copy(Think_PATH . "/application.ini", APP_PATH . "application.ini");
+            copy(Think_PATH . "/application.ini", APP_PATH . "application.ini");
         }
-        copy(Think_PATH . "/application.ini", APP_PATH . "application.ini");
         make_controller();
-        make_controller('index', 'my');
         return $this;
     }
     // 跨域设置
@@ -111,7 +112,6 @@ class Think
                     break;
                 }
             }
-            //pre($dispatcher->getRequest());
         }
     }
 }

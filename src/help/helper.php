@@ -39,16 +39,26 @@ function make_dir($path = '')
 function make_controller(string $name = 'index', string $module = '')
 {
     $name = ucwords($name);
-    $file = APP_PATH . ($module ? 'modules/' . $module . '/' : '') . 'controllers/' . $name . '.php';
+    $file = APP_PATH . ($module ? 'modules/' . ucwords($module) . '/' : '') . 'controllers/' . $name . '.php';
     if (file_exists($file)) {
         return false;
     }
     make_dir(dirname($file));
+    $separator = '';
+    if (ini_get('yaf.name_separator')) {
+        $separator = ini_get('yaf.name_separator');
+    }
+    if (ini_get('yaf.name_suffix')) {
+        $controller_name = $name . $separator . "Controller";
+    } else {
+        $controller_name = "Controller" . $separator . $name;
+    }
+    $action_name = 'Index' . 'Action';
     $myfile = fopen($file, "w") or die("Unable to open file!");
     $txt = "<?php
 use thinkyaf\Controller;   
-class {$name}Controller extends Controller{
-    public function indexAction(){
+class {$controller_name} extends Controller{
+    public function {$action_name}(){
         echo '欢迎使用thinkyaf开发框架';
     }
 }";
