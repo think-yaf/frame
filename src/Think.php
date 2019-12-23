@@ -30,6 +30,7 @@ class Think
                 die();
             }
         }
+        // 默认控制器处理
         $controller_dir = APP_PATH.'controllers/index.php';
         if($controller_dir){
             echo '默认控制不存在<br>请创建：'.$controller_dir;
