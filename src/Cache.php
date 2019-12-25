@@ -4,38 +4,19 @@ namespace thinkyaf;
 
 use thinkyaf\library\Redis;
 
-class Cache extends Redis
+class Cache
 {
-    public function __construct(array $options = null)
+    public function __construct($options = null)
     {
-        //$this->driver = new Redis($options);
-        parent::__construct($options);
+         return $this->store($options);
     }
-    /*
+
     //切换
-    public function store(string $name = null)
+    public function store($name = null)
     {
+        $redis = new Redis();
+        $redis->connect(['host' => '127.0.0.1', 'port' => 6379]);
+        $this->driver = $redis;
         return $this->driver;
     }
-    // 获取
-    public function get()
-    {
-        return $this;
-    }
-    // 设置
-    public function set()
-    {
-        return $this;
-    }
-    // 删除
-    public function del()
-    {
-        return $this;
-    }
-    // 清除
-    public function clear()
-    {
-        return $this;
-    }
-    */
 }
