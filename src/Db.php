@@ -20,6 +20,8 @@ class Db extends Medoo
     protected $join = null;
     //数据
     public $data = null;
+    // 伪删除
+    public $off = 'update_time';
     // 初始化
     public function __construct($options = '')
     {
@@ -69,8 +71,11 @@ class Db extends Medoo
         return $this;
     }
     //设置字段
-    public function where($where)
+    public function where($where, $off = true)
     {
+        if ($off) {
+            $where[$this->off] = null;
+        }
         $this->where = $where;
         return $this;
     }
@@ -96,8 +101,12 @@ class Db extends Medoo
         return $this->getData();
     }
     // 删除数据
-    public function del()
+    public function del($field = null)
     {
+        if ($field) {
+            $data = [$field => time()];
+            return $this->update($this->table, $data, $this->where)->rowCount();
+        }
         return $this->delete($this->table, $this->where)->rowCount();
     }
     // 更新数据
@@ -136,19 +145,19 @@ class Db extends Medoo
         return  $this->agg('avg', $column);
     }
     //查询单条数据
-    public function find()
+    public function find($more = false)
     {
         $this->act('get');
-        return $this->getData();
+        return $this->getData($more);
     }
     //查询多条数据
-    public function limit($limit = 15)
+    public function limit($limit = 15, $more = false)
     {
         if (!isset($this->where['LIMIT'])) {
             $this->where['LIMIT'] = $limit;
         }
         $this->act('select');
-        return $this->getData();
+        return $this->getData($more);
     }
     //查询分页数据
     public function page($limit = 15, $count = 0, $name = 'page')
@@ -181,16 +190,19 @@ class Db extends Medoo
      * ==================获取数据信息==================
      */
     // 获取数据
-    public function getData()
+    public function getData($more = false)
     {
-        $rs = [
-            'info' => $this->info(),
-            'error' => $this->error(),
-            'sql' => $this->last(),
-            'pdo' => $this->pdo,
-            'data' => $this->data
-        ];
-        return $rs;
+        if ($more) {
+            $rs = [
+                'info' => $this->info(),
+                'error' => $this->error(),
+                'sql' => $this->last(),
+                'pdo' => $this->pdo,
+                'data' => $this->data
+            ];
+            return $rs;
+        }
+        return $this->data;
     }
 }
 
