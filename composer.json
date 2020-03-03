@@ -1,7 +1,7 @@
 {
     "name": "thinkyaf/think-frame",
     "description": "thinkyaf-frame",
-    "type": "frame",
+    "type": "library",
     "license": "MIT",
     "authors": [{
         "name": "Tan Minghe",
