@@ -53,6 +53,7 @@ class Think
         if (!file_exists($ini_dir)) {
             copy(Think_PATH . "/application.ini", APP_PATH . "application.ini");
         }
+        make_bootstrap();  
         make_controller();
         return $this;
     }

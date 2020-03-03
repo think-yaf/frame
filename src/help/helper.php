@@ -66,3 +66,22 @@ class {$controller_name} extends Controller{
     fclose($myfile);
     return true;
 }
+// 创建Bootstrap
+function make_bootstrap()
+{
+    $file = APP_PATH . 'Bootstrap' . '.php';
+    if (file_exists($file)) {
+        return false;
+    }
+    $myfile = fopen($file, "w") or die("Unable to open file!");
+    $txt = "<?php
+use  Yaf\Bootstrap_Abstract;   
+class Bootstrap extends Bootstrap_Abstract{
+    public function _initConfig(){
+       //这里写您的代码 
+    }
+}";
+    fwrite($myfile, $txt);
+    fclose($myfile);
+    return true;
+}
