@@ -4,7 +4,6 @@
 
 thinkyaf框架是一个PHP开发框架，基于高效的yaf.3框架开发，
 
-官网：http://www.thinkyaf.com/
 微信/QQ：844888168
 
 
